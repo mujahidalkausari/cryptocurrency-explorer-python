@@ -30,7 +30,7 @@ try:
     # --------------------------------------
 
     #COPY API LINK FROM CSV FILE & ADDING TO api_link
-    print('Input Ticker & Address...\n')
+    print('\nBlock Explorer Started...(Reading CSV Input)\n')
 
     #open a file for writing 
     with open('./parameters/addresses.csv', newline='') as inputfile:
@@ -65,7 +65,7 @@ try:
                 api_json=json.loads(api_reply)
                 
         
-                cryptoid_dic = {"balance": api_json, "assets_symbol": ticker, "address": address,"date": dateToday}
+                cryptoid_dic = {"assets_symbol": ticker,"balance": api_json, "address": address,"date": dateToday}
                 dict_list.append(cryptoid_dic)
 
             elif pointer >= 1 and ticker =="NEO":
@@ -80,13 +80,43 @@ try:
 
                 for dict_item in api_data:
                     
-                    neoscan_dic = {"balance": dict_item['amount'], "assets_symbol": dict_item['asset_symbol'], "address": address,"date": dateToday}             
+                    neoscan_dic = {"assets_symbol": dict_item['asset_symbol'], "balance": dict_item['amount'], "address": address,"date": dateToday}             
                     dict_list.append(neoscan_dic)
                     
+            elif pointer >= 1 and ticker =="RDD":
+
+                pointer+=1
+                print(ticker+" : "+address)   
+
+                api_url = f"https://live.reddcoin.com/api/addr/" + str(address) +"/balance"
+                
+                api_request = urllib2.Request(api_url, headers=hdr)
+                api_reply = urllib2.urlopen(api_request).read()
+                api_json=json.loads(api_reply.decode())
+                
+        
+                reddcoin_dic = {"assets_symbol": ticker, "balance": api_json, "address": address,"date": dateToday}
+                dict_list.append(reddcoin_dic)
+                
+            elif pointer >= 1 and ticker =="ONT":
+
+                pointer+=1
+                print(ticker+" : "+address)   
+
+                api_url = f"https://explorer.ont.io/v2/addresses/" + str(address) +"/native/balances"
+                
+                api_request = urllib2.Request(api_url, headers=hdr)
+                api_reply = urllib2.urlopen(api_request).read()
+                api_json=json.loads(api_reply.decode())
+                api_data=api_json['result']
+
+                for dict_item in api_data:
+                
+                    ont_dic = {"assets_symbol": dict_item['asset_name'], "balance": dict_item['balance'], "address": address,"date": dateToday}             
+                    dict_list.append(ont_dic)
                     
-                    
-                    
-        print("\nGlobal JSON Create....\n")            
+                                            
+        print("\nAPIs Global JSON Creating....\n")            
         print(json.dumps(dict_list, sort_keys=True, indent=2))  
         
         #open a file for writing 
@@ -107,7 +137,7 @@ try:
                     print(dict_item.values())
         
         outputfile.close()
-        print("\nWrite to CSV completed!!!!File Closed!!!....\n")
+        print("\nCSV Report Generated succesfully!!!!File Closed!!!....\n")
         
         
         
@@ -115,3 +145,6 @@ except HTTPError as e:
     print("The server returned an HTTP error - "+str(e))
 except URLError as e:
     print("The server could not be found! - "+str(e))
+
+
+
