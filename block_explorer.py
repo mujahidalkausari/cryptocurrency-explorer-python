@@ -20,7 +20,7 @@ try:
            'Accept-Language': 'en-US,en;q=0.8',
            'Connection': 'keep-alive'}
 
-    # ---------------hold Output Dictionaries {}---------------
+    # ---------------Dictionaries {}---------------
     dict_list = []
     # -----Add addresses to lists for all addresses-----
     subscan_dic = []
@@ -33,15 +33,16 @@ try:
     print('\nBlock Explorer Started...(Reading CSV Input)\n')
 
     #open a file for writing 
-    with open('./parameters/addresses.csv', newline='') as inputfile:
+    with open('addresses.csv', newline='') as inputfile:
         file_reader = csv.reader(inputfile)
 
         #Check and Remove existing file first then populate updated records
-        if open('./api reports/balance.csv', 'a', newline=''):
-            os.remove('./api reports/balance.csv')  
+        if open('balance.csv', 'a', newline=''):
+            os.remove('balance.csv')  
 
         pointer=0
-        dateToday=datetime.today().strftime('%Y-%m-%d')
+        now = datetime.now()
+        dateToday = now.strftime("%Y-%m-%d %H:%M:%S")
         
         for address_line in file_reader:
 
@@ -65,10 +66,10 @@ try:
                 api_json=json.loads(api_reply)
                 
         
-                cryptoid_dic = {"assets_symbol": ticker,"balance": api_json, "address": address,"date": dateToday}
+                cryptoid_dic = {"assets_symbol": ticker,"address": address, "balance": api_json, "date": dateToday}
                 dict_list.append(cryptoid_dic)
 
-            elif pointer >= 1 and ticker =="NEO":
+            elif pointer >= 1 and ticker == "NEO":
 
                 pointer+=1
 
@@ -79,62 +80,59 @@ try:
                 api_data=api_json['balance']
 
                 for dict_item in api_data:
+
+                    if dict_item['asset_symbol'] == "NEO":
+                        neoscan_dic = {"assets_symbol": dict_item['asset_symbol'], "address": address, "balance": dict_item['amount'], "date": dateToday}             
+                        dict_list.append(neoscan_dic)
                     
-                    neoscan_dic = {"assets_symbol": dict_item['asset_symbol'], "balance": dict_item['amount'], "address": address,"date": dateToday}             
-                    dict_list.append(neoscan_dic)
-                    
-            elif pointer >= 1 and ticker =="RDD":
+            elif pointer >= 1 and ticker == "ETC":
 
                 pointer+=1
                 print(ticker+" : "+address)   
-
-                api_url = f"https://live.reddcoin.com/api/addr/" + str(address) +"/balance"
                 
+                api_url = f"https://blockscout.com/etc/mainnet/api?module=account&action=eth_get_balance&address=" + str(address)
+
+
                 api_request = urllib2.Request(api_url, headers=hdr)
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
-                
-        
-                reddcoin_dic = {"assets_symbol": ticker, "balance": api_json, "address": address,"date": dateToday}
+
+                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['jsonrpc'], "date": dateToday}
                 dict_list.append(reddcoin_dic)
-                
-            elif pointer >= 1 and ticker =="ONT":
+
+            elif pointer >= 1 and ticker == "EWT":
 
                 pointer+=1
                 print(ticker+" : "+address)   
-
-                api_url = f"https://explorer.ont.io/v2/addresses/" + str(address) +"/native/balances"
                 
+                api_url = f"https://explorer.energyweb.org/api?module=account&action=eth_get_balance&address=" + str(address)
+
+
                 api_request = urllib2.Request(api_url, headers=hdr)
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
-                api_data=api_json['result']
 
-                for dict_item in api_data:
-                
-                    ont_dic = {"assets_symbol": dict_item['asset_name'], "balance": dict_item['balance'], "address": address,"date": dateToday}             
-                    dict_list.append(ont_dic)
+                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['jsonrpc'], "date": dateToday}
+                dict_list.append(reddcoin_dic)
                     
                                             
         print("\nAPIs Global JSON Creating....\n")            
         print(json.dumps(dict_list, sort_keys=True, indent=2))  
         
         #open a file for writing 
-        with open('./api reports/balance.csv', 'a', newline='') as outputfile:
+        with open('Balance report.csv', 'a', newline='') as outputfile:
 
                 #create the csv writer object 
                 csv_writer = csv.writer(outputfile) 
                 
                 #headers to the CSV file       
-                header=['Ticker', 'Balance', 'Address', 'Date']
+                header=['Ticker', 'Address', 'Balance', 'Date']
                 #Writing headers of CSV file 
                 csv_writer.writerow(header) 
                 
-                print("\nWrite to CSV Report...\n")
-                
                 for dict_item in dict_list:
                     csv_writer.writerow(dict_item.values())
-                    print(dict_item.values())
+                    #print(dict_item.values())
         
         outputfile.close()
         print("\nCSV Report Generated succesfully!!!!File Closed!!!....\n")
