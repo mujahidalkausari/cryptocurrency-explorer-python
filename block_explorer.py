@@ -10,6 +10,7 @@ import json
 import csv
 import sys
 import os
+import base64
 
 try:
     
@@ -97,7 +98,7 @@ try:
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
 
-                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['jsonrpc'], "date": dateToday}
+                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
                 dict_list.append(reddcoin_dic)
 
             elif pointer >= 1 and ticker == "EWT":
@@ -112,7 +113,7 @@ try:
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
 
-                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['jsonrpc'], "date": dateToday}
+                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
                 dict_list.append(reddcoin_dic)
                     
                                             
