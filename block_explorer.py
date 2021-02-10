@@ -37,8 +37,8 @@ try:
         file_reader = csv.reader(inputfile)
 
         #Check and Remove existing file first then populate updated records
-        if open('balance.csv', 'a', newline=''):
-            os.remove('balance.csv')  
+        if open('balance report.csv', 'a', newline=''):
+            os.remove('balance report.csv')  
 
         pointer=0
         now = datetime.now()
@@ -120,7 +120,7 @@ try:
         print(json.dumps(dict_list, sort_keys=True, indent=2))  
         
         #open a file for writing 
-        with open('Balance report.csv', 'a', newline='') as outputfile:
+        with open('balance report.csv', 'a', newline='') as outputfile:
 
                 #create the csv writer object 
                 csv_writer = csv.writer(outputfile) 
