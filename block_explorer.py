@@ -10,7 +10,7 @@ import json
 import csv
 import sys
 import os
-import base64
+
 
 try:
     
@@ -112,7 +112,7 @@ try:
                 api_request = urllib2.Request(api_url, headers=hdr)
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
-
+                
                 reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
                 dict_list.append(reddcoin_dic)
                     
