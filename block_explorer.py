@@ -1,16 +1,13 @@
 #!/usr/bin/env python
+import os
 import sys
 import platform
-import time
 from datetime import datetime
-import urllib.request as urllib2
+import urllib.request
 from urllib.error import HTTPError
 from urllib.error import URLError
 import json
 import csv
-import sys
-import os
-import base64
 
 try:
     
@@ -23,15 +20,12 @@ try:
 
     # ---------------Dictionaries {}---------------
     dict_list = []
-    # -----Add addresses to lists for all addresses-----
-    subscan_dic = []
-    blockscout_dic = []
     # ------------API KEY----------------
     cryptoid_key = '45510f721dc1'
     # --------------------------------------
 
     #COPY API LINK FROM CSV FILE & ADDING TO api_link
-    print('\nBlock Explorer Started...(Reading CSV Input)\n')
+    print('\nBlock Explorer Started (reading csv Input...)\n')
 
     #open a file for writing 
     with open('addresses.csv', newline='') as inputfile:
@@ -62,8 +56,8 @@ try:
 
                 url_cryptoid = f"https://chainz.cryptoid.info/{ticker.lower()}/api.dws?q=getbalance&a=" + str(address)
 
-                api_request = urllib2.Request(url_cryptoid, headers=hdr)
-                api_reply = urllib2.urlopen(api_request).read()
+                api_request = urllib.request.Request(url_cryptoid, headers=hdr)
+                api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply)
                 
         
@@ -75,8 +69,8 @@ try:
                 pointer+=1
 
                 url_neoscan = f"https://api.neoscan.io/api/main_net/v1/get_balance/" + str(address)
-                api_request = urllib2.Request(url_neoscan, headers=hdr)
-                api_reply = urllib2.urlopen(api_request).read()
+                api_request = urllib.request.Request(url_neoscan, headers=hdr)
+                api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply)
                 api_data=api_json['balance']
 
@@ -93,9 +87,9 @@ try:
                 
                 api_url = f"https://blockscout.com/etc/mainnet/api?module=account&action=balance&address=" + str(address)
 
-
-                api_request = urllib2.Request(api_url, headers=hdr)
-                api_reply = urllib2.urlopen(api_request).read()
+                
+                api_request = urllib.request.Request(api_url, headers=hdr)
+                api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
             
 
@@ -110,8 +104,8 @@ try:
                 api_url = f"https://explorer.energyweb.org/api?module=account&action=balance&address=" + str(address)
 
 
-                api_request = urllib2.Request(api_url, headers=hdr)
-                api_reply = urllib2.urlopen(api_request).read()
+                api_request = urllib.request.Request(api_url, headers=hdr)
+                api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
 
                 reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
@@ -125,8 +119,8 @@ try:
                 api_url = f"https://explorer.ont.io/v2/addresses/" + str(address) +"/native/balances"
 
 
-                api_request = urllib2.Request(api_url, headers=hdr)
-                api_reply = urllib2.urlopen(api_request).read()
+                api_request = urllib.request.Request(api_url, headers=hdr)
+                api_reply = urllib.request.urlopen(api_request).read()
                 api_json = json.loads(api_reply.decode())
                 api_data = api_json["result"]
                 
