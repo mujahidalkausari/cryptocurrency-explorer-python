@@ -10,7 +10,7 @@ import json
 import csv
 import sys
 import os
-
+import base64
 
 try:
     
@@ -82,7 +82,7 @@ try:
 
                 for dict_item in api_data:
 
-                    if dict_item['asset_symbol'] == "NEO":
+                    if dict_item['asset_symbol'].lower() == "NEO".lower():
                         neoscan_dic = {"assets_symbol": dict_item['asset_symbol'], "address": address, "balance": dict_item['amount'], "date": dateToday}             
                         dict_list.append(neoscan_dic)
                     
@@ -91,12 +91,13 @@ try:
                 pointer+=1
                 print(ticker+" : "+address)   
                 
-                api_url = f"https://blockscout.com/etc/mainnet/api?module=account&action=eth_get_balance&address=" + str(address)
+                api_url = f"https://blockscout.com/etc/mainnet/api?module=account&action=balance&address=" + str(address)
 
 
                 api_request = urllib2.Request(api_url, headers=hdr)
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
+            
 
                 reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
                 dict_list.append(reddcoin_dic)
@@ -106,15 +107,36 @@ try:
                 pointer+=1
                 print(ticker+" : "+address)   
                 
-                api_url = f"https://explorer.energyweb.org/api?module=account&action=eth_get_balance&address=" + str(address)
+                api_url = f"https://explorer.energyweb.org/api?module=account&action=balance&address=" + str(address)
 
 
                 api_request = urllib2.Request(api_url, headers=hdr)
                 api_reply = urllib2.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
-                
+
                 reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
                 dict_list.append(reddcoin_dic)
+                
+            elif pointer >= 1 and ticker == "ONT":
+
+                pointer+=1
+                print(ticker+" : "+address)   
+                
+                api_url = f"https://explorer.ont.io/v2/addresses/" + str(address) +"/native/balances"
+
+
+                api_request = urllib2.Request(api_url, headers=hdr)
+                api_reply = urllib2.urlopen(api_request).read()
+                api_json = json.loads(api_reply.decode())
+                api_data = api_json["result"]
+                
+                #print(json.dumps(api_data, sort_keys=True, indent=2))
+
+                for dict_item in api_data:
+
+                    if dict_item['asset_name'].lower()  == "ONT".lower():
+                        ont_dic = {"assets_symbol": dict_item['asset_name'].upper(), "address": address, "balance": dict_item['balance'], "date": dateToday}             
+                        dict_list.append(ont_dic)
                     
                                             
         print("\nAPIs Global JSON Creating....\n")            
