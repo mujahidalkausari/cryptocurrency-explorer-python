@@ -54,9 +54,9 @@ try:
                 pointer+=1
                 print(ticker+" : "+address)   
 
-                url_cryptoid = f"https://chainz.cryptoid.info/{ticker.lower()}/api.dws?q=getbalance&a=" + str(address)
+                api_url = f"https://chainz.cryptoid.info/{ticker.lower()}/api.dws?q=getbalance&a=" + str(address)
 
-                api_request = urllib.request.Request(url_cryptoid, headers=hdr)
+                api_request = urllib.request.Request(api_url, headers=hdr)
                 api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply)
                 
@@ -68,8 +68,8 @@ try:
 
                 pointer+=1
 
-                url_neoscan = f"https://api.neoscan.io/api/main_net/v1/get_balance/" + str(address)
-                api_request = urllib.request.Request(url_neoscan, headers=hdr)
+                api_url = f"https://api.neoscan.io/api/main_net/v1/get_balance/" + str(address)
+                api_request = urllib.request.Request(api_url, headers=hdr)
                 api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply)
                 api_data=api_json['balance']
@@ -133,7 +133,7 @@ try:
                         dict_list.append(dict_object)
                     
                                             
-        print("\nAPIs Global JSON Creating....\n")            
+        print("\nCreating APIs Global JSON....\n")            
         print(json.dumps(dict_list, sort_keys=True, indent=2))  
         
         #open a file for writing 
