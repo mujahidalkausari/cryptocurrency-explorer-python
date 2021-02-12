@@ -8,7 +8,6 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 import json
 import csv
-import math
 
 try:
     
