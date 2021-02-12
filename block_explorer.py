@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 import os
 import sys
 import platform
@@ -8,6 +8,7 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 import json
 import csv
+import math
 
 try:
     
@@ -93,7 +94,7 @@ try:
                 api_json=json.loads(api_reply.decode())
             
 
-                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
+                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": int(api_json['result'])/(10**18), "date": dateToday}
                 dict_list.append(reddcoin_dic)
 
             elif pointer >= 1 and ticker == "EWT":
@@ -108,7 +109,7 @@ try:
                 api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
 
-                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": api_json['result'], "date": dateToday}
+                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": int(api_json['result'])/(10**18), "date": dateToday}
                 dict_list.append(reddcoin_dic)
                 
             elif pointer >= 1 and ticker == "ONT":
@@ -161,5 +162,5 @@ except HTTPError as e:
 except URLError as e:
     print("The server could not be found! - "+str(e))
 
-#created by mujahidalkausari Feb 2021
+
 
