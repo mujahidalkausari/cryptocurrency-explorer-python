@@ -62,8 +62,8 @@ try:
                 api_json=json.loads(api_reply)
                 
         
-                cryptoid_dic = {"assets_symbol": ticker,"address": address, "balance": api_json, "date": dateToday}
-                dict_list.append(cryptoid_dic)
+                dict_object = {"assets_symbol": ticker,"address": address, "balance": api_json, "date": dateToday}
+                dict_list.append(dict_object)
 
             elif pointer >= 1 and ticker == "NEO":
 
@@ -78,8 +78,8 @@ try:
                 for dict_item in api_data:
 
                     if dict_item['asset_symbol'].lower() == "NEO".lower():
-                        neoscan_dic = {"assets_symbol": dict_item['asset_symbol'], "address": address, "balance": dict_item['amount'], "date": dateToday}             
-                        dict_list.append(neoscan_dic)
+                        dict_object = {"assets_symbol": dict_item['asset_symbol'], "address": address, "balance": dict_item['amount'], "date": dateToday}             
+                        dict_list.append(dict_object)
                     
             elif pointer >= 1 and ticker == "ETC":
 
@@ -94,8 +94,8 @@ try:
                 api_json=json.loads(api_reply.decode())
             
 
-                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": int(api_json['result'])/(10**18), "date": dateToday}
-                dict_list.append(reddcoin_dic)
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json['result'])/(10**18), "date": dateToday}
+                dict_list.append(dict_object)
 
             elif pointer >= 1 and ticker == "EWT":
 
@@ -109,8 +109,8 @@ try:
                 api_reply = urllib.request.urlopen(api_request).read()
                 api_json=json.loads(api_reply.decode())
 
-                reddcoin_dic = {"assets_symbol": ticker, "address": address, "balance": int(api_json['result'])/(10**18), "date": dateToday}
-                dict_list.append(reddcoin_dic)
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json['result'])/(10**18), "date": dateToday}
+                dict_list.append(dict_object)
                 
             elif pointer >= 1 and ticker == "ONT":
 
@@ -130,8 +130,8 @@ try:
                 for dict_item in api_data:
 
                     if dict_item['asset_name'].lower()  == "ONT".lower():
-                        ont_dic = {"assets_symbol": dict_item['asset_name'].upper(), "address": address, "balance": dict_item['balance'], "date": dateToday}             
-                        dict_list.append(ont_dic)
+                        dict_object = {"assets_symbol": dict_item['asset_name'].upper(), "address": address, "balance": dict_item['balance'], "date": dateToday}             
+                        dict_list.append(dict_object)
                     
                                             
         print("\nAPIs Global JSON Creating....\n")            
