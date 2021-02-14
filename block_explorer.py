@@ -18,20 +18,14 @@ try:
            'Accept-Language': 'en-US,en;q=0.8',
            'Connection': 'keep-alive'}
 
-    # ---------------Dictionaries {}---------------
     dict_list = []
-    # ------------API KEY----------------
-    cryptoid_key = '45510f721dc1'
-    # --------------------------------------
 
-    #COPY API LINK FROM CSV FILE & ADDING TO api_link
     print('\nBlock Explorer Started (reading csv Input...)\n')
 
-    #open a file for writing 
     with open('addresses.csv', newline='') as inputfile:
         file_reader = csv.reader(inputfile)
 
-        #Check and Remove existing file first then populate updated records
+        #Check and Remove existing file then populate updated records
         if open('balance report.csv', 'a', newline=''):
             os.remove('balance report.csv')  
 
