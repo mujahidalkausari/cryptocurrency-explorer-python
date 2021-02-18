@@ -194,6 +194,24 @@ try:
 
                 dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json)/(10**18), "date": dateTimeToday}             
                 dict_list.append(dict_object)
+            
+            elif pointer >= 1 and ticker == "DCR":
+
+                pointer+=1
+                print(ticker+" : "+address)   
+                
+                api_url = f"https://dcrdata.decred.org/api/address/{str(address)}/totals"
+
+
+                api_request = urllib.request.Request(api_url, headers=hdr)
+                api_reply = urllib.request.urlopen(api_request).read()
+                api_json = json.loads(api_reply)
+                
+                #print(json.dumps(api_json["dcr_spent"], sort_keys=True, indent=2))
+
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json["dcr_spent"]), "date": dateTimeToday}             
+                dict_list.append(dict_object)
+                        
                         
                         
         print("\nCreating APIs Global JSON....\n")            
