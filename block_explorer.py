@@ -140,7 +140,7 @@ try:
                 
                 #print(json.dumps(api_data, sort_keys=True, indent=2))
 
-                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_data['amount'])*(10**12), "date": dateTimeToday}             
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_data['amount'])/(10**6), "date": dateTimeToday}             
                 dict_list.append(dict_object)
                 
             elif pointer >= 1 and ticker == "BTS":
@@ -175,7 +175,7 @@ try:
                 
                 #print(json.dumps(api_json, sort_keys=True, indent=2))
 
-                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json)*(10**12), "date": dateTimeToday}             
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json)/(10**8), "date": dateTimeToday}             
                 dict_list.append(dict_object)
             
             elif pointer >= 1 and ticker == "SC":
