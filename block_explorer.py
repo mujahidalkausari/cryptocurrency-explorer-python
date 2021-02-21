@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#Created by Mujahid Alkausari 2021
 from datetime import datetime
 import urllib.request
 from urllib.error import HTTPError
@@ -141,7 +140,7 @@ try:
                 
                 #print(json.dumps(api_data, sort_keys=True, indent=2))
 
-                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_data['amount'])/(10**18), "date": dateTimeToday}             
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_data['amount'])*(10**12), "date": dateTimeToday}             
                 dict_list.append(dict_object)
                 
             elif pointer >= 1 and ticker == "BTS":
@@ -176,7 +175,7 @@ try:
                 
                 #print(json.dumps(api_json, sort_keys=True, indent=2))
 
-                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json)/(10**18), "date": dateTimeToday}             
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json)*(10**12), "date": dateTimeToday}             
                 dict_list.append(dict_object)
             
             elif pointer >= 1 and ticker == "SC":
@@ -210,7 +209,7 @@ try:
                 
                 #print(json.dumps(api_json["dcr_spent"], sort_keys=True, indent=2))
 
-                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json["dcr_spent"]), "date": dateTimeToday}             
+                dict_object = {"assets_symbol": ticker, "address": address, "balance": int(api_json["dcr_unspent"]), "date": dateTimeToday}             
                 dict_list.append(dict_object)
                         
                         
